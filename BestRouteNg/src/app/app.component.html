@@ -1,0 +1,114 @@
+<div class="container-geral">
+  <header>
+    <div class="container">
+      <h1>Olá! Você está acessando a página de teste de um processo seletivo.</h1>
+      <h3>Clique <a [href]="swaggerUrl">aqui</a> para acessar o swagger da API.</h3>
+    </div>
+
+    <ul class="menu">
+      <li (click)="selectSection('searchRoutes')">Pesquisar rotas</li>
+      <li (click)="selectSection('newRoute')">Inserir nova rota</li>
+      <li (click)="selectSection('searchBestRoute')">Pesquisar rota de menor custo</li>
+    </ul>
+  </header>
+
+  <main>
+    <section class="container" *ngIf="showedSection.searchRoutes">
+      <h2>Pesquisar rotas</h2>
+      <form #searchForm="ngForm" (submit)="searchRoutes()">
+        <div class="form-group">
+          <label for="searchOrigin">Origem</label>
+          <input type="text" id="searchOrigin" [(ngModel)]="searchFormData.origin" name="origin" placeholder="Origem">
+        </div>
+        <div class="form-group">
+          <label for="searchDestination">Destino</label>
+          <input type="text" id="searchDestination" [(ngModel)]="searchFormData.destination" name="destination" placeholder="Destino">
+        </div>
+
+        <button type="submit" class="form-button">Pesquisar</button>
+      </form>
+    </section>
+
+    <section class="container" *ngIf="showedSection.listRoutes">
+      <p *ngIf="routeListResult.length === 0">Nenhuma rota encontrada.</p>
+
+      <ul *ngFor="let route of routeListResult">
+        <li>
+          Origem: {{ route.origin }} -> Destino: {{ route.destination }}: Valor: {{ route.value }}
+          <button (click)="openEditRoute(route)">Editar</button>
+          <button (click)="deleteRoute(route.id!)">Excluir</button>
+        </li>
+      </ul>
+    </section>
+
+    <section class="container" *ngIf="showedSection.newRoute">
+      <h2>Inserir nova rota</h2>
+      <form #newRouteForm="ngForm" (submit)="newRoute()">
+        <div class="form-group">
+          <label for="newRouteOrigin">Origem</label>
+          <input type="text" id="newRouteOrigin" [(ngModel)]="routeFormData.origin" name="origin" placeholder="Origem">
+        </div>
+        <div class="form-group">
+          <label for="newRouteDestination">Destino</label>
+          <input type="text" id="newRouteDestination" [(ngModel)]="routeFormData.destination" name="destination" placeholder="Destino">
+        </div>
+        <div class="form-group">
+          <label for="newRouteValue">Valor</label>
+          <input type="number" id="newRouteValue" [(ngModel)]="routeFormData.value" name="value" placeholder="Valor">
+        </div>
+
+        <button type="submit" class="form-button">Inserir</button>
+      </form>
+    </section>
+
+    <section class="container" *ngIf="showedSection.editRoute">
+      <h2>Editar rota</h2>
+      <form #editRouteForm="ngForm" (submit)="editRoute()">
+        <div class="form-group">
+          <label for="editRouteOrigin">Origem</label>
+          <input type="text" id="editRouteOrigin" [(ngModel)]="routeFormData.origin" name="origin" placeholder="Origem">
+        </div>
+        <div class="form-group">
+          <label for="editRouteDestination">Destino</label>
+          <input type="text" id="editRouteDestination" [(ngModel)]="routeFormData.destination" name="destination" placeholder="Destino">
+        </div>
+        <div class="form-group">
+          <label for="editRouteValue">Valor</label>
+          <input type="number" id="editRouteValue" [(ngModel)]="routeFormData.value" name="value" placeholder="Valor">
+        </div>
+
+        <button type="submit" class="form-button">Editar</button>
+      </form>
+    </section>
+
+    <section class="container" *ngIf="showedSection.searchBestRoute">
+      <h2>Pesquisar rota de menor custo</h2>
+      <form #searchBestRouteForm="ngForm" (submit)="searchBestRoute()">
+        <div class="form-group">
+          <label for="searchBestRouteOrigin">Origem</label>
+          <input type="text" id="searchBestRouteOrigin" [(ngModel)]="searchFormData.origin" name="origin" placeholder="Origem">
+        </div>
+        <div class="form-group">
+          <label for="searchBestRouteDestination">Destino</label>
+          <input type="text" id="searchBestRouteDestination" [(ngModel)]="searchFormData.destination" name="destination" placeholder="Destino">
+        </div>
+
+        <button type="submit" class="form-button">Pesquisar</button>
+      </form>
+    </section>
+
+    <section class="container" *ngIf="showedSection.resultBestRoute">
+      <p *ngIf="!bestRouteResult">Nenhuma rota encontrada.</p>
+
+      <div *ngIf="bestRouteResult">
+        <p>A melhor rota encontrada foi:</p>
+        {{ bestRouteResult.routes.join(' - ') }} ao custo de ${{ bestRouteResult.value }}
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Desenvolvido por Vinícius Bastos da Silva</p>
+  </footer>
+</div>
